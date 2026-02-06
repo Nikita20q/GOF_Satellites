@@ -4,12 +4,10 @@ public class CommunicationSatellite extends Satellite{
         return bandWidth;
     }
 
-    CommunicationSatellite(String name, double bandWidth, EnergySystem energySystem, SatelliteState satelliteState) {
-        this.energy = energySystem;
-        this.state = satelliteState;
-        this.name = name;
+
+    public CommunicationSatellite(String name, double bandWidth) {
+        super(name, 100);
         this.bandWidth = bandWidth;
-        energy.setBatteryLevel(100.0);
         System.out.println(String.format("Создан спутник: %s (заряд: %f%%)", name, energy.getBatteryLevel()));
     }
 
@@ -17,7 +15,7 @@ public class CommunicationSatellite extends Satellite{
     protected void performMission() {
         if (state.isActive()) {
             sendData(bandWidth);
-            consumeBattery(0.05);
+            energy.consume(0.05);
         } else {
             System.out.println("🛑 " + name + ": Не может выполнить передачу данных - не активен");
         }

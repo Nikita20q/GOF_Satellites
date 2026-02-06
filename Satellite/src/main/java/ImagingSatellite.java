@@ -10,22 +10,18 @@ public class ImagingSatellite extends Satellite {
         return photosTaken;
     }
 
-    ImagingSatellite(String name, double resolution, EnergySystem energySystem,SatelliteState satelliteState) {
-        this.energy = energySystem;
-        this.state = satelliteState;
-        this.name = name;
+    public ImagingSatellite(String name, double resolution) {
+        super(name, 100);
         this.resolution = resolution;
-        energy.setBatteryLevel(100.0);
         System.out.println(String.format("Создан спутник: %s (заряд: %f%%)", name, energy.getBatteryLevel()));
     }
 
     @Override
     public void performMission() {
         if (state.isActive()) {
+            System.out.println(name + ": Съемка территории с разрешением " + resolution + "м/пиксель");
             takePhoto();
-            consumeBattery(0.08);
-            System.out.println(String.format("%s: Съемка территории с разрешением %.2f м/пиксель", name, resolution));
-            System.out.println(String.format("%s: Снимок #%d сделан!", name, photosTaken));
+            energy.setBatteryLevel(0.08);
         }
         else {
             System.out.println("🛑 " + name + ": Не может выполнить съемку - не активен");

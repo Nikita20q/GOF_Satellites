@@ -9,11 +9,11 @@ public class Main{
         System.out.println("СОЗДАНИЕ СПЕЦИАЛИЗИРОВАННЫХ СПУТНИКОВ:");
         System.out.println("---------------------------------------------");
 
-        ImagingSatellite iS1 = new ImagingSatellite("Связь-1", 500.0, new EnergySystem(), new SatelliteState());
-        ImagingSatellite iS2 = new ImagingSatellite("Связь-2", 1000.0, new EnergySystem(), new SatelliteState());
-        CommunicationSatellite cS1 = new CommunicationSatellite("ДЗЗ-1", 500.0, new EnergySystem(), new SatelliteState());
-        CommunicationSatellite cS2 = new CommunicationSatellite("ДЗЗ-2", 1000.0, new EnergySystem(), new SatelliteState());
-        CommunicationSatellite cS3 = new CommunicationSatellite("ДЗЗ-3", 1500.0, new EnergySystem(), new SatelliteState());
+        ImagingSatellite iS1 = new ImagingSatellite("Связь-1", 500.0);
+        ImagingSatellite iS2 = new ImagingSatellite("Связь-2", 1000.0);
+        CommunicationSatellite cS1 = new CommunicationSatellite("ДЗЗ-1", 500.0);
+        CommunicationSatellite cS2 = new CommunicationSatellite("ДЗЗ-2", 1000.0);
+        CommunicationSatellite cS3 = new CommunicationSatellite("ДЗЗ-3", 1500.0);
         cS3.setBatteryLevel(15);
         SatelliteConstellation mission = new SatelliteConstellation("RU Basic");
         System.out.println("ФОРМИРОВАНИЕ ГРУППИРОВКИ:");
