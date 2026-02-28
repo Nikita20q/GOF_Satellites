@@ -1,3 +1,5 @@
+package seminars;
+
 public class CommunicationSatellite extends Satellite{
     private double bandWidth;
     public double getBandWidth() {
@@ -5,8 +7,8 @@ public class CommunicationSatellite extends Satellite{
     }
 
 
-    public CommunicationSatellite(String name, double bandWidth) {
-        super(name, 100);
+    public CommunicationSatellite(String name, double batteryLevel, double bandWidth) {
+        super(name, batteryLevel);
         this.bandWidth = bandWidth;
         System.out.println(String.format("Создан спутник: %s (заряд: %f%%)", name, energy.getBatteryLevel()));
     }
@@ -30,6 +32,6 @@ public class CommunicationSatellite extends Satellite{
 
     @Override
     public String toString() {
-        return String.format("CommunicationSatellite{bandwidth=%.2f, name='%s', isActive=%b, batteryLevel=%.2f}", bandWidth, name, state.isActive(), energy.getBatteryLevel());
+        return String.format("seminars.CommunicationSatellite{bandwidth=%.2f, name='%s', isActive=%b, batteryLevel=%.2f}", bandWidth, name, state.isActive(), energy.getBatteryLevel());
     }
 }

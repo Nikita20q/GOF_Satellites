@@ -1,3 +1,5 @@
+package seminars;
+
 public class SatelliteState {
     private boolean isActive;
     private String statusMessage;
@@ -31,6 +33,6 @@ public class SatelliteState {
 
     @Override
     public String toString() {
-        return "SatelliteState{" + "isActive=" + isActive + ", statusMessage='" + statusMessage + '\'' + '}';
+        return "seminars.SatelliteState{" + "isActive=" + isActive + ", statusMessage='" + statusMessage + '\'' + '}';
     }
 }

@@ -1,0 +1,59 @@
+package seminars;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import seminars.factory.CommunicationSatelliteFactory;
+import seminars.factory.ImagingSatelliteFactory;
+import seminars.repository.ConstellationRepository;
+import seminars.services.SpaceOperationCenterService;
+
+
+@SpringBootApplication
+public class Main{
+    public static void main(String[] args) {
+
+        System.out.println("============================================================");
+        System.out.println("ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ");
+        System.out.println("============================================================");
+
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
+        ConstellationRepository constellationRepository = context.getBean(ConstellationRepository.class);
+        SpaceOperationCenterService spaceOperationCenterService = context.getBean(SpaceOperationCenterService.class);
+
+        ImagingSatelliteFactory imagingSatelliteFactory = context.getBean(ImagingSatelliteFactory.class);
+        CommunicationSatelliteFactory communicationSatelliteFactory = context.getBean(CommunicationSatelliteFactory.class);
+
+        System.out.println("СОЗДАНИЕ СПЕЦИАЛИЗИРОВАННЫХ СПУТНИКОВ:");
+        System.out.println("---------------------------------------------");
+
+        ImagingSatellite cS1 = imagingSatelliteFactory.createSatelliteWithParameter("Связь-1", 100, 500.0);
+        ImagingSatellite cS2 = imagingSatelliteFactory.createSatelliteWithParameter("Связь-2", 100, 1000.0);
+        CommunicationSatellite iS1 = communicationSatelliteFactory.createSatelliteWithParameter("ДЗЗ-1", 100, 500.0);
+        CommunicationSatellite iS2 = communicationSatelliteFactory.createSatelliteWithParameter("ДЗЗ-2", 100, 1000.0);
+        CommunicationSatellite iS3 = communicationSatelliteFactory.createSatelliteWithParameter("ДЗЗ-3", 15, 1500.0);
+
+        spaceOperationCenterService.createAndSaveConstellation("Орбита-1");
+        spaceOperationCenterService.createAndSaveConstellation("Орбита-2");
+        System.out.println("ФОРМИРОВАНИЕ ГРУППИРОВКИ:");
+        System.out.println("---------------------------------------------");
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", cS1);
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", iS1);
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", iS2);
+
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", cS2);
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", iS3);
+        System.out.println("-----------------------------------");
+        System.out.println("АКТИВАЦИЯ СПУТНИКОВ:");
+        System.out.println("-----------------------------------");
+        spaceOperationCenterService.activateAllConstellation("Орбита-1");
+        spaceOperationCenterService.activateAllConstellation("Орбита-2");
+
+        spaceOperationCenterService.executeConstellationMission("Орбита-1");
+        spaceOperationCenterService.executeConstellationMission("Орбита-2");
+
+        spaceOperationCenterService.showConstellationStatus("Орбита-1");
+        spaceOperationCenterService.showConstellationStatus("Орбита-2");
+        System.out.println(constellationRepository.getAllConstellations().toString());
+    }
+}

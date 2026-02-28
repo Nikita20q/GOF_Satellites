@@ -1,3 +1,5 @@
+package seminars;
+
 public class ImagingSatellite extends Satellite {
     private double resolution;
     private int photosTaken;
@@ -10,8 +12,8 @@ public class ImagingSatellite extends Satellite {
         return photosTaken;
     }
 
-    public ImagingSatellite(String name, double resolution) {
-        super(name, 100);
+    public ImagingSatellite(String name, double batteryLevel, double resolution) {
+        super(name, batteryLevel);
         this.resolution = resolution;
         System.out.println(String.format("Создан спутник: %s (заряд: %f%%)", name, energy.getBatteryLevel()));
     }
@@ -34,6 +36,6 @@ public class ImagingSatellite extends Satellite {
 
     @Override
     public String toString() {
-        return String.format("ImagingSatellite{resolution=%.2f, photosTaken=%d, name='%s', isActive=%b, batteryLevel=%.2f}", resolution, photosTaken, name, state.isActive(), energy.getBatteryLevel());
+        return String.format("seminars.ImagingSatellite{resolution=%.2f, photosTaken=%d, name='%s', isActive=%b, batteryLevel=%.2f}", resolution, photosTaken, name, state.isActive(), energy.getBatteryLevel());
     }
 }

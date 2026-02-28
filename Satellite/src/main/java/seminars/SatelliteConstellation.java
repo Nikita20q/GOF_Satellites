@@ -1,26 +1,31 @@
+package seminars;
+
 import java.util.ArrayList;
 
 public class SatelliteConstellation {
-    String constellationName;
-    ArrayList<Satellite> satellites = new ArrayList<>();
+    private String constellationName;
+    private ArrayList<Satellite> satellites = new ArrayList<>();
 
-    SatelliteConstellation(String name) {
+    public SatelliteConstellation(String name) {
         constellationName = name;
         System.out.println("---------------------------------------------");
         System.out.println("Создана спутниковая группировка: " + constellationName);
         System.out.println("---------------------------------------------");
     }
 
-    void addSatellite(Satellite satellite) {
+    public void addSatellite(Satellite satellite) {
         satellites.add(satellite);
         System.out.println(satellite.name + " добавлен в группировку " + "'" + constellationName + "'");
     }
-    void executeAllMission() {
+    public void executeAllMission() {
         for (var i : satellites) {
             i.performMission();
         }
     }
-    ArrayList<Satellite> getSatellites() {
+    public ArrayList<Satellite> getSatellites() {
         return satellites;
+    }
+    public String getConstellationName() {
+        return constellationName;
     }
 }

@@ -1,3 +1,5 @@
+package seminars;
+
 abstract public class Satellite {
 
     protected String name;
@@ -6,7 +8,13 @@ abstract public class Satellite {
 
     public Satellite(String name, double batteryLevel) {
         this.name = name;
-        this.energy = new EnergySystem(batteryLevel);
+        this.energy = EnergySystem.builder()
+                .batteryLevel(batteryLevel)
+                .MAX_BATTERY(EnergySystemConstants.MAX_ENERGY)
+                .MIN_BATTERY(EnergySystemConstants.MIN_ENERGY)
+                .LOW_BATTERY_THRESHOLD(EnergySystemConstants.LOW_BATTERY_TRESHOLD)
+                .build();
+//        this.energy = new EnergySystem(batteryLevel);
         this.state = state = new SatelliteState();
         System.out.println("Создан спутник: " + this.name + " (" + energy.getBatteryLevel() + ")");
     }

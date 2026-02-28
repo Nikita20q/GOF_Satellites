@@ -1,16 +1,21 @@
+package seminars;
+
+import lombok.Builder;
+
+@Builder
 public class EnergySystem {
     private double batteryLevel;
 
-    private static final double LOW_BATTERY_THRESHOLD = 20.0;
-    private static final double MAX_BATTERY = 100.0;
-    private static final double MIN_BATTERY = 0;
+    private double LOW_BATTERY_THRESHOLD;
+    private double MAX_BATTERY;
+    private double MIN_BATTERY;
     public double getBatteryLevel() {
         return batteryLevel;
     }
 
-    public EnergySystem(double batteryLevel) {
-        this.batteryLevel = Math.max(MIN_BATTERY ,batteryLevel);
-    }
+//    public EnergySystem(double batteryLevel) {
+//        this.batteryLevel = Math.max(MIN_BATTERY ,batteryLevel);
+//    }
 
     public boolean consume(double amount) {
         if (amount <= 0 || batteryLevel <= MIN_BATTERY) {
@@ -26,14 +31,16 @@ public class EnergySystem {
     public void setBatteryLevel(double batteryLevel) {
         if (batteryLevel > MAX_BATTERY) {
             this.batteryLevel = MAX_BATTERY;
-        } else if  (batteryLevel < LOW_BATTERY_THRESHOLD) {
-            this.batteryLevel = LOW_BATTERY_THRESHOLD;
+        } else if  (batteryLevel < MIN_BATTERY) {
+            this.batteryLevel = MIN_BATTERY;
         } else {
             this.batteryLevel = batteryLevel;
         }
     }
     @Override
     public String toString() {
-        return "EnergySystem{" + "batteryLevel=" + batteryLevel + '}';
+        return "seminars.EnergySystem{" + "batteryLevel=" + batteryLevel + '}';
     }
+
+
 }
