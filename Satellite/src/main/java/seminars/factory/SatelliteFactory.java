@@ -1,8 +1,12 @@
 package seminars.factory;
 
 import seminars.Satellite;
+import seminars.enums.SatelliteType;
+import seminars.exeptions.SpaceOperationException;
+import seminars.params.SatelliteParam;
 
-abstract class SatelliteFactory {
-    public abstract Satellite createSatellite(String name, double batteryLevel);
-    public abstract Satellite createSatelliteWithParameter(String name, double batteryLevel, double parameter);
+public abstract class SatelliteFactory {
+
+    public abstract Satellite createSatelliteWithParameter(SatelliteParam param) throws SpaceOperationException;
+    public abstract boolean isSatelliteTypeSupported(SatelliteType type);
 }

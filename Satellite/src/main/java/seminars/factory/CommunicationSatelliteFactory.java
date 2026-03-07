@@ -4,16 +4,25 @@ import org.springframework.stereotype.Service;
 import seminars.CommunicationSatellite;
 import seminars.ImagingSatellite;
 import seminars.Satellite;
+import seminars.enums.SatelliteType;
+import seminars.exeptions.SpaceOperationException;
+import seminars.params.CommunicationSatelliteParam;
+import seminars.params.ImagingSatelliteParam;
+import seminars.params.SatelliteParam;
 
 @Service
-public class CommunicationSatelliteFactory extends SatelliteFactory {
+public class CommunicationSatelliteFactory extends SatelliteFactory{
+
     @Override
-    public CommunicationSatellite createSatellite(String name, double batteryLevel) {
-        return new CommunicationSatellite(name, batteryLevel, 0);
+    public Satellite createSatelliteWithParameter(SatelliteParam param) throws SpaceOperationException {
+        if (SatelliteType.COMMUNICATION.equals(param.getType()) && param instanceof CommunicationSatelliteParam communicationSatelliteParam) {
+            return new CommunicationSatellite(communicationSatelliteParam.getName(), communicationSatelliteParam.getBatteryLevel(), communicationSatelliteParam.getBandwidth());
+        }
+        throw new SpaceOperationException("Некорректный тип параметров");
     }
 
     @Override
-    public CommunicationSatellite createSatelliteWithParameter(String name, double batteryLevel, double parameter) {
-        return new CommunicationSatellite(name, batteryLevel, parameter);
+    public boolean isSatelliteTypeSupported(SatelliteType type) {
+        return  (SatelliteType.COMMUNICATION.equals(type));
     }
 }

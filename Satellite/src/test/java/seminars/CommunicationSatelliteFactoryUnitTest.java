@@ -3,8 +3,10 @@ package seminars;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import seminars.exeptions.SpaceOperationException;
 import seminars.factory.CommunicationSatelliteFactory;
 import seminars.factory.ImagingSatelliteFactory;
+import seminars.params.CommunicationSatelliteParam;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,8 +24,8 @@ public class CommunicationSatelliteFactoryUnitTest {
 
     @Test
     @DisplayName("Создание CommunicationSatellite с корректными параметрами")
-    void testCreateCommunicationSatellite() {
-        CommunicationSatellite satellite = satelliteFactory.createSatelliteWithParameter(SATELLITE_NAME, BATTERY_LEVEL, BAND_WITH);
+    void testCreateCommunicationSatellite() throws SpaceOperationException {
+        CommunicationSatellite satellite = (CommunicationSatellite) satelliteFactory.createSatelliteWithParameter(new CommunicationSatelliteParam(SATELLITE_NAME, BATTERY_LEVEL, BAND_WITH));
         assertNotNull(satellite);
         assertInstanceOf(CommunicationSatellite.class, satellite);
         assertEquals(SATELLITE_NAME, satellite.getName());
@@ -33,8 +35,8 @@ public class CommunicationSatelliteFactoryUnitTest {
 
     @Test
     @DisplayName("Создание спутника с минимальным зарядом батареи")
-    void testCreateSatelliteWithMinBatteryLevel() {
-        CommunicationSatellite satellite = satelliteFactory.createSatelliteWithParameter(SATELLITE_NAME, 0, BAND_WITH);
+    void testCreateSatelliteWithMinBatteryLevel() throws SpaceOperationException {
+        CommunicationSatellite satellite = (CommunicationSatellite) satelliteFactory.createSatelliteWithParameter(new CommunicationSatelliteParam(SATELLITE_NAME, 0, BAND_WITH));
         assertEquals(0.0, satellite.getEnergy().getBatteryLevel());
         assertEquals(BAND_WITH, satellite.getBandWidth());
         assertEquals(SATELLITE_NAME, satellite.getName());
