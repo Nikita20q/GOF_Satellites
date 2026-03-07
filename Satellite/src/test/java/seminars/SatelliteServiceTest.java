@@ -35,8 +35,8 @@ public class SatelliteServiceTest {
         assertInstanceOf(ImagingSatellite.class, satellite);
         ImagingSatellite imagingSatellite = (ImagingSatellite) satellite;
 
-        assertEquals(NAME, satellite.getName());
-        assertEquals(BATTERY_LEVEL, satellite.getEnergy().getBatteryLevel());
-        assertEquals(PARAM, ((ImagingSatellite)satellite).getResolution());
+        assertEquals(NAME, imagingSatellite.getName());
+        assertEquals(BATTERY_LEVEL, imagingSatellite.getEnergy().getBatteryLevel());
+        assertEquals(PARAM, imagingSatellite.getResolution());
     }
 }
