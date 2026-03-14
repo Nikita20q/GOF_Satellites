@@ -7,7 +7,6 @@ import seminars.enums.SatelliteType;
 import seminars.exeptions.SpaceOperationException;
 import seminars.params.ImagingSatelliteParam;
 import seminars.params.SatelliteParam;
-import seminars.services.SpaceOperationCenterService;
 
 @Service
 public class ImagingSatelliteFactory extends SatelliteFactory {

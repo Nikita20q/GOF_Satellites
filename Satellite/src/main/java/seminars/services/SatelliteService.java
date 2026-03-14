@@ -10,5 +10,5 @@ import seminars.params.SatelliteParam;
 import java.util.List;
 
 interface SatelliteService {
-    public abstract Satellite createSatellite(SatelliteParam param) throws SpaceOperationException;
+    Satellite createSatellite(SatelliteParam param) throws SpaceOperationException;
 }

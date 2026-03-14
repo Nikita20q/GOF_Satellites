@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seminars.repository.ConstellationRepository;
-import seminars.services.SpaceOperationCenterService;
+import seminars.services.ConstellationService;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class ConstellationRepositoryMockTest {
     private ConstellationRepository mockConstellationRepository;
 
     @InjectMocks
-    private SpaceOperationCenterService spaceOperationCenterService;
+    private ConstellationService constellationService;
 
     @Test
     @DisplayName("Добавление спутника должно обращаться к репозиторию")
@@ -37,7 +37,7 @@ public class ConstellationRepositoryMockTest {
         when(mockConstellationRepository.getConstellation(CONSTELLATION_1))
                 .thenReturn(constellation);
 
-        spaceOperationCenterService.addSatelliteToConstellation(CONSTELLATION_1, imagingSatellite);
+        constellationService.addSatelliteToConstellation(CONSTELLATION_1, imagingSatellite);
 
         verify(mockConstellationRepository, times(1)).getConstellation(CONSTELLATION_1);
     }
@@ -46,7 +46,7 @@ public class ConstellationRepositoryMockTest {
     @DisplayName("Создание группировки должно сохранять её в репозитории")
     void testCreateAndSaveConstellation() {
 
-        spaceOperationCenterService.createAndSaveConstellation("NewGroup");
+        constellationService.createAndSaveConstellation("NewGroup");
 
         verify(mockConstellationRepository, times(1)).addConstellation(any());
     }
@@ -57,7 +57,7 @@ public class ConstellationRepositoryMockTest {
         SatelliteConstellation constellation = new SatelliteConstellation(CONSTELLATION_1);
         when(mockConstellationRepository.getConstellation(CONSTELLATION_1)).thenReturn(constellation);
 
-        spaceOperationCenterService.executeConstellationMission(CONSTELLATION_1);
+        constellationService.executeConstellationMission(CONSTELLATION_1);
 
         verify(mockConstellationRepository, times(1)).getConstellation(CONSTELLATION_1);
     }
@@ -68,7 +68,7 @@ public class ConstellationRepositoryMockTest {
         SatelliteConstellation constellation = new SatelliteConstellation(CONSTELLATION_1);
         when(mockConstellationRepository.getConstellation(CONSTELLATION_1)).thenReturn(constellation);
 
-        spaceOperationCenterService.activateAllConstellation(CONSTELLATION_1);
+        constellationService.activateAllConstellation(CONSTELLATION_1);
 
         verify(mockConstellationRepository, times(1)).getConstellation(CONSTELLATION_1);
     }
@@ -79,7 +79,7 @@ public class ConstellationRepositoryMockTest {
         SatelliteConstellation constellation = new SatelliteConstellation(CONSTELLATION_1);
         when(mockConstellationRepository.getConstellation(CONSTELLATION_1)).thenReturn(constellation);
 
-        spaceOperationCenterService.showConstellationStatus(CONSTELLATION_1);
+        constellationService.showConstellationStatus(CONSTELLATION_1);
 
         verify(mockConstellationRepository, times(1)).getConstellation(CONSTELLATION_1);
     }

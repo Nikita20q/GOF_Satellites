@@ -1,45 +1,48 @@
 package seminars.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seminars.Satellite;
-import seminars.SatelliteConstellation;
-import seminars.repository.ConstellationRepository;
+import seminars.aop.LogExecutionTime;
+import seminars.domain.requests.AddSatelliteRequest;
+import seminars.domain.requests.MissionRequest;
+import seminars.exeptions.SpaceOperationException;
+import seminars.params.SatelliteParam;
 
+import static seminars.domain.requests.MissionTargetType.CONSTELLATION;
+
+@RequiredArgsConstructor
 @Service
 public class SpaceOperationCenterService {
-    private final ConstellationRepository constellationRepository;
-    public SpaceOperationCenterService(ConstellationRepository constellationRepository) {
-        this.constellationRepository = constellationRepository;
-    }
-    public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
-        SatelliteConstellation constellation = constellationRepository.getConstellation(constellationName);
-        constellation.addSatellite(satellite);
-        System.out.println("Добавлен спутник: " + satellite.getName() + " в группировку " + constellationName);
-    }
 
-    public void createAndSaveConstellation(String constellationName) {
-        SatelliteConstellation constellation = new SatelliteConstellation(constellationName);
-        constellationRepository.addConstellation(constellation);
-    }
-    public void executeConstellationMission(String constellationName) {
-        SatelliteConstellation constellation = constellationRepository.getConstellation(constellationName);
-        System.out.println("\n===ВЫПОЛНЕНИЕ МИССИЙ ДЛЯ ГРУППИРОВКИ: " +  constellationName + "===");
-        constellation.executeAllMission();
-    }
-    public void activateAllConstellation(String constellationName) {
-        SatelliteConstellation constellation = constellationRepository.getConstellation(constellationName);
-        System.out.println("\n=== АКТИВАЦИЯ СПУТНИКОВ В ГРУППИРОВКЕ: " + constellationName + " ===");
-        for  (Satellite satellite : constellation.getSatellites()) {
-            satellite.activate();
+    private final ConstellationService constellationService;
+    private final SatelliteService satelliteService;
+    @LogExecutionTime
+    public void addSatellite(AddSatelliteRequest addSatelliteRequest) throws SpaceOperationException {
+        if (!constellationService.checkConstellationExists(addSatelliteRequest.constellationName())) {
+            constellationService.createAndSaveConstellation(addSatelliteRequest.constellationName());
+        }
+
+        for (SatelliteParam satelliteParam : addSatelliteRequest.satelliteParams()) {
+            Satellite satellite = satelliteService.createSatellite(satelliteParam);
+            constellationService.addSatelliteToConstellation(addSatelliteRequest.constellationName(), satellite);
         }
     }
 
-    public void showConstellationStatus(String constellationName) {
-        SatelliteConstellation constellation = constellationRepository.getConstellation(constellationName);
-        System.out.println("\n=== СТАТУС ГРУППИРОВКИ:  " + constellationName + " ===");
-        System.out.println("Количество спутников: " + constellation.getSatellites().size());
-        for (Satellite satellite : constellation.getSatellites()) {
-            System.out.println(satellite.getState());
+    public void executeMission(MissionRequest missionRequest) {
+        switch (missionRequest.missionTargetType()) {
+            case CONSTELLATION -> {
+                constellationService.activateAllConstellation(missionRequest.constallationName());
+                constellationService.executeConstellationMission(missionRequest.constallationName());
+            }
+            case SINGLE_SATELLITE -> {
+                var constallation = constellationService.getConstellations(missionRequest.constallationName());
+                var satellite = constallation.getSatellites().stream()
+                        .filter(s -> s.getName().equals(missionRequest.satelliteName()))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Спутник не найден " + missionRequest.satelliteName()));
+                satellite.activate();
+            }
         }
     }
 }

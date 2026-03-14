@@ -10,7 +10,7 @@ import seminars.params.CommunicationSatelliteParam;
 import seminars.params.ImagingSatelliteParam;
 import seminars.repository.ConstellationRepository;
 import seminars.services.SatelliteServiceImpl;
-import seminars.services.SpaceOperationCenterService;
+import seminars.services.ConstellationService;
 
 
 @SpringBootApplication
@@ -23,7 +23,7 @@ public class Main{
 
         ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
         ConstellationRepository constellationRepository = context.getBean(ConstellationRepository.class);
-        SpaceOperationCenterService spaceOperationCenterService = context.getBean(SpaceOperationCenterService.class);
+        ConstellationService constellationService = context.getBean(ConstellationService.class);
 
         ImagingSatelliteFactory imagingSatelliteFactory = context.getBean(ImagingSatelliteFactory.class);
         CommunicationSatelliteFactory communicationSatelliteFactory = context.getBean(CommunicationSatelliteFactory.class);
@@ -38,27 +38,27 @@ public class Main{
         CommunicationSatellite iS2 = (CommunicationSatellite) satelliteService.createSatellite(new CommunicationSatelliteParam("ДЗЗ-2", 100, 1000.0));
         CommunicationSatellite iS3 = (CommunicationSatellite) satelliteService.createSatellite(new CommunicationSatelliteParam("ДЗЗ-3", 15, 1500.0));
 
-        spaceOperationCenterService.createAndSaveConstellation("Орбита-1");
-        spaceOperationCenterService.createAndSaveConstellation("Орбита-2");
+        constellationService.createAndSaveConstellation("Орбита-1");
+        constellationService.createAndSaveConstellation("Орбита-2");
         System.out.println("ФОРМИРОВАНИЕ ГРУППИРОВКИ:");
         System.out.println("---------------------------------------------");
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", cS1);
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", iS1);
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", iS2);
+        constellationService.addSatelliteToConstellation("Орбита-1", cS1);
+        constellationService.addSatelliteToConstellation("Орбита-1", iS1);
+        constellationService.addSatelliteToConstellation("Орбита-1", iS2);
 
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", cS2);
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", iS3);
+        constellationService.addSatelliteToConstellation("Орбита-2", cS2);
+        constellationService.addSatelliteToConstellation("Орбита-2", iS3);
         System.out.println("-----------------------------------");
         System.out.println("АКТИВАЦИЯ СПУТНИКОВ:");
         System.out.println("-----------------------------------");
-        spaceOperationCenterService.activateAllConstellation("Орбита-1");
-        spaceOperationCenterService.activateAllConstellation("Орбита-2");
+        constellationService.activateAllConstellation("Орбита-1");
+        constellationService.activateAllConstellation("Орбита-2");
 
-        spaceOperationCenterService.executeConstellationMission("Орбита-1");
-        spaceOperationCenterService.executeConstellationMission("Орбита-2");
+        constellationService.executeConstellationMission("Орбита-1");
+        constellationService.executeConstellationMission("Орбита-2");
 
-        spaceOperationCenterService.showConstellationStatus("Орбита-1");
-        spaceOperationCenterService.showConstellationStatus("Орбита-2");
+        constellationService.showConstellationStatus("Орбита-1");
+        constellationService.showConstellationStatus("Орбита-2");
         System.out.println(constellationRepository.getAllConstellations().toString());
     }
 }
