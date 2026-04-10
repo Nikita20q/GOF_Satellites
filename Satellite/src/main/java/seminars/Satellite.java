@@ -55,4 +55,8 @@ abstract public class Satellite {
         }
     }
     abstract protected void performMission();
+
+    public boolean isActive() {
+        return state.isActive();
+    }
 }

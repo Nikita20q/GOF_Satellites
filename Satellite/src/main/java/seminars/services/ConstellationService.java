@@ -3,9 +3,12 @@ package seminars.services;
 import org.springframework.stereotype.Service;
 import seminars.Satellite;
 import seminars.SatelliteConstellation;
+import seminars.exeptions.SpaceOperationException;
 import seminars.repository.ConstellationRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class ConstellationService {
@@ -55,5 +58,27 @@ public class ConstellationService {
 
     public SatelliteConstellation getConstellations(String constellationName) {
         return constellationRepository.getConstellation(constellationName);
+    }
+
+    public Collection<SatelliteConstellation> getAllConstellations() {
+        return constellationRepository.getAllConstellations().values();
+    }
+
+    public void removeSatelliteFromConstellation(String constellationName, String satelliteName)
+            throws SpaceOperationException {
+
+        SatelliteConstellation constellation = constellationRepository.getConstellation(constellationName);
+
+        Optional<Satellite> satelliteOpt = constellation.getSatellites().stream()
+                .filter(s -> s.getName().equals(satelliteName))
+                .findFirst();
+
+        if (satelliteOpt.isEmpty()) {
+            throw new SpaceOperationException(
+                    String.format("Спутник '%s' не найден в группировке '%s'", satelliteName, constellationName));
+        }
+
+        constellation.getSatellites().remove(satelliteOpt.get());
+        System.out.println("Спутник удалён: " + satelliteName);
     }
 }
